@@ -7,6 +7,11 @@ query Categories {
       id
       name
       product_count
+      children {
+        id
+        name
+        product_count
+      }
     }
   }
 }
@@ -34,6 +39,10 @@ query Products(
       small_image {
         url
         label
+      }
+      categories {
+        id
+        name
       }
       price_range {
         minimum_price {
@@ -71,6 +80,10 @@ query Products($id: String!, $page: Int!, $size: Int!) {
       small_image {
         url
         label
+      }
+      categories {
+        id
+        name
       }
       price_range {
         minimum_price {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'categories_screen.dart';
 import 'coming_soon_screen.dart';
 import 'home_screen.dart';
-import 'search_screen.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -14,23 +13,20 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
 
-  void _onSearchTabSelected() {
-    setState(() {
-      _currentIndex = 2;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final List<Widget> screens = [
-      HomeScreen(onSearchTap: _onSearchTabSelected),
-      const CategoriesScreen(),
-      const SearchScreen(),
-      const ComingSoonScreen(
-        title: 'Cart',
-        icon: Icons.shopping_cart_outlined,
+    final List<Widget> screens = const [
+      HomeScreen(),
+      CategoriesScreen(),
+      ComingSoonScreen(
+        title: 'Wishlist',
+        icon: Icons.favorite_outline_rounded,
       ),
-      const ComingSoonScreen(
+      ComingSoonScreen(
+        title: 'Cart',
+        icon: Icons.shopping_bag_outlined,
+      ),
+      ComingSoonScreen(
         title: 'Account',
         icon: Icons.person_outline_rounded,
       ),
@@ -55,18 +51,26 @@ class _MainShellState extends State<MainShell> {
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.category_outlined),
-            selectedIcon: Icon(Icons.category_rounded),
+            icon: Icon(Icons.grid_view_rounded),
+            selectedIcon: Icon(Icons.grid_view_rounded),
             label: 'Categories',
           ),
           NavigationDestination(
-            icon: Icon(Icons.search_outlined),
-            selectedIcon: Icon(Icons.search_rounded),
-            label: 'Search',
+            icon: Icon(Icons.favorite_outline_rounded),
+            selectedIcon: Icon(Icons.favorite_rounded),
+            label: 'Wishlist',
           ),
           NavigationDestination(
-            icon: Icon(Icons.shopping_cart_outlined),
-            selectedIcon: Icon(Icons.shopping_cart_rounded),
+            icon: Badge(
+              label: Text('3'),
+              backgroundColor: Color(0xFFC2410C),
+              child: Icon(Icons.shopping_bag_outlined),
+            ),
+            selectedIcon: Badge(
+              label: Text('3'),
+              backgroundColor: Color(0xFFC2410C),
+              child: Icon(Icons.shopping_bag_rounded),
+            ),
             label: 'Cart',
           ),
           NavigationDestination(

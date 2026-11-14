@@ -12,6 +12,8 @@ class Product {
   final double finalPrice;
   final String currency;
   final double discountPercent;
+  final List<String> categoryIds;
+  final List<String> categoryNames;
 
   const Product({
     required this.id,
@@ -25,9 +27,22 @@ class Product {
     required this.finalPrice,
     required this.currency,
     required this.discountPercent,
+    this.categoryIds = const [],
+    this.categoryNames = const [],
   });
 
   bool get hasDiscount => discountPercent > 0 && regularPrice > finalPrice;
+
+  bool matchesCategory(String categoryId, [String? categoryName]) {
+    if (categoryIds.contains(categoryId)) return true;
+    if (categoryName != null && categoryName.isNotEmpty) {
+      final nameLower = categoryName.trim().toLowerCase();
+      if (categoryNames.any((n) => n.trim().toLowerCase() == nameLower)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   factory Product.fromJson(Map<String, dynamic> json) {
     final smallImage = json['small_image'] as Map<String, dynamic>?;
@@ -49,6 +64,18 @@ class Product {
         (discountObj?['percent_off'] as num?)?.toDouble() ?? 0.0;
     final status = json['stock_status']?.toString() ?? 'OUT_OF_STOCK';
 
+    final categoriesRaw = json['categories'] as List? ?? [];
+    final categoryIds = <String>[];
+    final categoryNames = <String>[];
+    for (final c in categoriesRaw) {
+      if (c is Map<String, dynamic>) {
+        final cid = c['id']?.toString();
+        if (cid != null && cid.isNotEmpty) categoryIds.add(cid);
+        final cname = c['name']?.toString();
+        if (cname != null && cname.isNotEmpty) categoryNames.add(cname);
+      }
+    }
+
     return Product(
       id: json['id']?.toString() ?? '',
       name: json['name']?.toString() ?? '',
@@ -61,6 +88,8 @@ class Product {
       finalPrice: finalVal,
       currency: curr,
       discountPercent: discountPercent,
+      categoryIds: categoryIds,
+      categoryNames: categoryNames,
     );
   }
 }
