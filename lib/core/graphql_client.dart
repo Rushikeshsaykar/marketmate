@@ -10,6 +10,10 @@ Future<Map<String, dynamic>> query(
   Map<String, dynamic>? variables,
 }) async {
   try {
+    final Map<String, dynamic>? cleanVariables = variables != null
+        ? (Map<String, dynamic>.from(variables)..removeWhere((_, v) => v == null))
+        : null;
+
     final response = await http
         .post(
           Uri.parse(graphqlUrl),
@@ -18,7 +22,7 @@ Future<Map<String, dynamic>> query(
           },
           body: jsonEncode({
             'query': q,
-            'variables': ?variables,
+            'variables': ?cleanVariables,
           }),
         )
         .timeout(const Duration(seconds: 20));

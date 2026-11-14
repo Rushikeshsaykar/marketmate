@@ -12,6 +12,49 @@ query Categories {
 }
 ''';
 
+const String productsQuery = r'''
+query Products(
+  $search: String
+  $filter: ProductAttributeFilterInput
+  $sort: ProductAttributeSortInput
+  $page: Int!
+  $size: Int!
+) {
+  products(search: $search, filter: $filter, sort: $sort, currentPage: $page, pageSize: $size) {
+    total_count
+    page_info {
+      current_page
+      total_pages
+    }
+    items {
+      id
+      name
+      sku
+      stock_status
+      small_image {
+        url
+        label
+      }
+      price_range {
+        minimum_price {
+          regular_price {
+            value
+            currency
+          }
+          final_price {
+            value
+            currency
+          }
+          discount {
+            percent_off
+          }
+        }
+      }
+    }
+  }
+}
+''';
+
 const String productsByCategoryQuery = r'''
 query Products($id: String!, $page: Int!, $size: Int!) {
   products(filter: {category_id: {eq: $id}}, currentPage: $page, pageSize: $size) {

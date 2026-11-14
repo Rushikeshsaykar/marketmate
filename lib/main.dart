@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'core/theme.dart';
 import 'providers/category_provider.dart';
 import 'providers/home_provider.dart';
+import 'providers/search_provider.dart';
 import 'screens/main_shell.dart';
 
 class DevHttpOverrides extends HttpOverrides {
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => HomeProvider()..load()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()..load()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
       child: MaterialApp(
         title: 'My Store',
